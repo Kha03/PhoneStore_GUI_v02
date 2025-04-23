@@ -2,6 +2,7 @@ package iuh.fit.se.techgalaxy.frontend.customerV02.service.impl;
 
 import iuh.fit.se.techgalaxy.frontend.customerV02.dto.request.OrderRequestV2;
 import iuh.fit.se.techgalaxy.frontend.customerV02.dto.response.OrderResponse;
+import iuh.fit.se.techgalaxy.frontend.customerV02.entities.enumeration.PaymentMethod;
 import iuh.fit.se.techgalaxy.frontend.customerV02.entities.enumeration.PaymentStatus;
 import iuh.fit.se.techgalaxy.frontend.customerV02.exception.AppException;
 import iuh.fit.se.techgalaxy.frontend.customerV02.exception.ErrorCode;
@@ -30,7 +31,7 @@ public class OrderServiceImpl implements OrderService {
     WebClient webClient;
 
     @Override
-    public ApiResponse<List<OrderResponse>> createOrder(String address, HttpSession session, PaymentStatus paymentStatus) {
+    public ApiResponse<List<OrderResponse>> createOrder(String address, HttpSession session, PaymentStatus paymentStatus, PaymentMethod paymentMethod) {
         String customerId = (String) session.getAttribute("customerId");
         String accessToken = (String) session.getAttribute("accessToken");
         if (customerId == null) {
@@ -39,6 +40,7 @@ public class OrderServiceImpl implements OrderService {
 
         OrderRequestV2.OrderRequestV2Builder orderRequestBuilder = OrderRequestV2.builder()
                 .customerId(customerId)
+                .paymentMethod(paymentMethod)
                 .paymentStatus(paymentStatus)
                 .address(address);
 

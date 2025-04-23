@@ -34,11 +34,11 @@ public class Paymentcontroller {
         if (vnp_ResponseCode.equals("00")) {
             String address = (String) session.getAttribute("address");
             if (address != null) {
-                orderService.createOrder(address, session, PaymentStatus.PAID);
-                String email = (String) session.getAttribute("email");
-                ApiResponse<List<CustomerResponse>> customerResponse = customerService.getInfoByMail(email, session);
-                String customerName = customerResponse.getData().get(0).getName();
-                emailService.sendEmailFromTemplateSync("VN-Pay", address,customerName , vnp_TxnRef, session);
+//                orderService.createOrder(address, session, PaymentStatus.PAID);
+//                String email = (String) session.getAttribute("email");
+//                ApiResponse<List<CustomerResponse>> customerResponse = customerService.getInfoByMail(email, session);
+//                String customerName = customerResponse.getData().get(0).getName();
+//                emailService.sendEmailFromTemplateSync("VN-Pay", address,customerName , vnp_TxnRef, session);
                 session.removeAttribute("address");
                 return "vnpay_return";
             }

@@ -1,6 +1,7 @@
 package iuh.fit.se.techgalaxy.frontend.customerV02.dto.request;
 
 import iuh.fit.se.techgalaxy.frontend.customerV02.entities.enumeration.OrderStatus;
+import iuh.fit.se.techgalaxy.frontend.customerV02.entities.enumeration.PaymentMethod;
 import iuh.fit.se.techgalaxy.frontend.customerV02.entities.enumeration.PaymentStatus;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -18,6 +19,7 @@ public class OrderRequestV2 {
     String systemUserId;
     String address;
     PaymentStatus paymentStatus = PaymentStatus.PENDING;
+    PaymentMethod paymentMethod;
     OrderStatus orderStatus = OrderStatus.NEW;
     List<ProductDetailOrder> productDetailOrders;
 

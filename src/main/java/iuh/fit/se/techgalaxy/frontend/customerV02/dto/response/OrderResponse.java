@@ -15,11 +15,12 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderResponse {
     String id;
-    CustomerResponse customer;
+    CustomerResponseV2 customer;
     SystemUserResponse systemUser;
     String address;
     PaymentStatus paymentStatus;
     OrderStatus orderStatus;
     List<OrderDetailResponse> orderDetails;
     LocalDateTime createdAt;
+    String paymentLink;
 }

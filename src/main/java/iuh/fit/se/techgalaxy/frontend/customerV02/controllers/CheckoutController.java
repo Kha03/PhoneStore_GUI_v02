@@ -2,6 +2,7 @@ package iuh.fit.se.techgalaxy.frontend.customerV02.controllers;
 
 import iuh.fit.se.techgalaxy.frontend.customerV02.dto.response.OrderResponse;
 import iuh.fit.se.techgalaxy.frontend.customerV02.dto.response.PaymentResponse;
+import iuh.fit.se.techgalaxy.frontend.customerV02.entities.enumeration.PaymentMethod;
 import iuh.fit.se.techgalaxy.frontend.customerV02.entities.enumeration.PaymentStatus;
 import iuh.fit.se.techgalaxy.frontend.customerV02.service.EmailService;
 import iuh.fit.se.techgalaxy.frontend.customerV02.service.OrderService;
@@ -40,7 +41,7 @@ public class CheckoutController {
             return "redirect:/cart/checkout";
         }
             if(paymentMethod .equalsIgnoreCase("shipcod")){
-                order = orderService.createOrder(address, session, PaymentStatus.PENDING);
+                order = orderService.createOrder(address, session, PaymentStatus.PENDING, PaymentMethod.COD);
             }
             else if(paymentMethod.equalsIgnoreCase("vnpay")){
 
@@ -50,12 +51,14 @@ public class CheckoutController {
                     total = ((Double) totalObj).intValue();
                 }
                 log.info("Total: {}", total);
-                PaymentResponse.VNPayResponseCreate vnPayResponseCreate = paymentService.createVnPayPayment(total,session);
-                if (vnPayResponseCreate != null) {
-                    String paymentUrl = vnPayResponseCreate.getPaymentUrl();
-                    session.setAttribute("address", address);
-                    return "redirect:" + paymentUrl;
-                }
+//                PaymentResponse.VNPayResponseCreate vnPayResponseCreate = paymentService.createVnPayPayment(total,session);
+//                if (vnPayResponseCreate != null) {
+//                    String paymentUrl = vnPayResponseCreate.getPaymentUrl();
+//                    session.setAttribute("address", address);
+//                    return "redirect:" + paymentUrl;
+//                }
+                order = orderService.createOrder(address, session, PaymentStatus.WAITING, PaymentMethod.VNPAY);
+                return "redirect:" + order.getData().getFirst().getPaymentLink();
             }
             if(order != null) {
                 emailService.sendEmailFromTemplateSync(paymentMethod.toString(), address, name,order.getData().get(0).getId(), session);
