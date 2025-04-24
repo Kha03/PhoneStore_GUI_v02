@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -42,6 +43,12 @@
             <a href="<c:url value='/signup'/>" class="function signup">Sign up</a>
           </div>
         </div>
+        <c:if test="${not empty errorMessage}">
+          <div class="alert alert-danger" style="text-align: center;">
+            ${errorMessage}
+          </div>
+        </c:if>
+
         <h1 style="margin-bottom: 1rem">Log In</h1>
         <div class="form-group">
           <input

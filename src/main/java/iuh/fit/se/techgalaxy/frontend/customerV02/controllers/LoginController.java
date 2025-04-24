@@ -31,7 +31,6 @@ public class LoginController {
 
     @GetMapping("/signin")
     public String showLoginPage(Model model) {
-        model.addAttribute("errorMessage", null);
 
         return "signin";
     }
@@ -46,24 +45,35 @@ public class LoginController {
                         @RequestParam String password,
                         HttpSession session,
                         HttpServletResponse response,
-                        Model model,
-                        RedirectAttributes redirectAttributes
-                        ) {
-
-        ResponseEntity<Map> loginResponse = authService.login(username, password, session, response);
-        
+                        RedirectAttributes redirectAttributes) {
+    
+        System.out.println("Login attempt for user: " + username);
+    
+        ResponseEntity<Map> loginResponse;
+    
+        try {
+            loginResponse = authService.login(username, password, session, response);
+        } catch (Exception e) {
+            System.out.println("Exception during login: " + e.getMessage());
+            e.printStackTrace(); // print full stack trace
+            redirectAttributes.addFlashAttribute("errorMessage", "Internal server error. Please try again.");
+            return "redirect:/signin";
+        }
+    
+        System.out.println("Login response status: " + loginResponse.getStatusCode());
+    
         if (loginResponse.getStatusCode().is2xxSuccessful()) {
+            System.out.println("Login successful. Redirecting to /home");
             redirectAttributes.addFlashAttribute("successMessage", "Login successfully!");
             return "redirect:/home";
         } else {
-            redirectAttributes.addFlashAttribute("errorMessage", "Login failed!");
-            model.addAttribute("errorMessage", "Login failed!");
+            System.out.println("Login failed. Adding error message and redirecting to /signin");
+            redirectAttributes.addFlashAttribute("errorMessage", "Login failed! Please check your credentials.");
             return "redirect:/signin";
         }
     }
-
-
-
+    
+    
     @PostMapping("/logout")
     public ModelAndView logout(HttpSession session, HttpServletResponse response) {
         String accessToken = (String) session.getAttribute("accessToken");
