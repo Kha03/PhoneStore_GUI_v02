@@ -48,8 +48,9 @@ public class RegisterController {
 	                redirectAttributes.addFlashAttribute("successMessage", "Account created successfully!");
 	                return "redirect:/signin"; // Redirect to sign-in page after successful registration
 	            } else {
-	                model.addAttribute("errorMessage", "Registration failed! Please try again.");
-	                return "signup";
+					String errorMessage = (String) registerResponse.getBody().get("error");
+					model.addAttribute("errorMessage", errorMessage);
+					return "signup"; // Trả lại trang đăng ký và hiển thị lỗi;
 	            }
 	        } catch (Exception e) {
 	            log.error("Error occurred during registration: {}", e.getMessage(), e);

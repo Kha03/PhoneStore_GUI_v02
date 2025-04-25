@@ -42,6 +42,12 @@
             <a href="#" class="function signup active">Sign up</a>
           </div>
         </div>
+        <c:if test="${not empty errorMessage}">
+          <div class="alert alert-danger" style="text-align: center; width: 100%; margin-bottom: 1rem;">
+            ${errorMessage}
+          </div>
+        </c:if>
+
         <h1 style="margin-bottom: 1rem;font-size:35px">Create your account</h1>
         <div class="form-group mb-3">
           <input
