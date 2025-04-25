@@ -51,12 +51,14 @@ public class CheckoutController {
                     total = ((Double) totalObj).intValue();
                 }
                 log.info("Total: {}", total);
-                PaymentResponse.VNPayResponseCreate vnPayResponseCreate = paymentService.createVnPayPayment(total,session);
-                if (vnPayResponseCreate != null) {
-                    String paymentUrl = vnPayResponseCreate.getPaymentUrl();
-                    session.setAttribute("address", address);
-                    return "redirect:" + paymentUrl;
-                }
+//                PaymentResponse.VNPayResponseCreate vnPayResponseCreate = paymentService.createVnPayPayment(total,session);
+//                if (vnPayResponseCreate != null) {
+//                    String paymentUrl = vnPayResponseCreate.getPaymentUrl();
+//                    session.setAttribute("address", address);
+//                    return "redirect:" + paymentUrl;
+//                }
+                order = orderService.createOrder(address, session, PaymentStatus.WAITING, PaymentMethod.VNPAY);
+                return "redirect:" + order.getData().get(0).getPaymentLink();
             }
             if(order != null) {
                 emailService.sendEmailFromTemplateSync(paymentMethod.toString(), address, name,order.getData().get(0).getId(), session);

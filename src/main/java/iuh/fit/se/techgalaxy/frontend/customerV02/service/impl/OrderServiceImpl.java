@@ -2,11 +2,14 @@ package iuh.fit.se.techgalaxy.frontend.customerV02.service.impl;
 
 import iuh.fit.se.techgalaxy.frontend.customerV02.dto.request.OrderRequestV2;
 import iuh.fit.se.techgalaxy.frontend.customerV02.dto.response.OrderResponse;
+import iuh.fit.se.techgalaxy.frontend.customerV02.dto.response.ProductDetailResponse;
+import iuh.fit.se.techgalaxy.frontend.customerV02.entities.enumeration.OrderStatus;
 import iuh.fit.se.techgalaxy.frontend.customerV02.entities.enumeration.PaymentMethod;
 import iuh.fit.se.techgalaxy.frontend.customerV02.entities.enumeration.PaymentStatus;
 import iuh.fit.se.techgalaxy.frontend.customerV02.exception.AppException;
 import iuh.fit.se.techgalaxy.frontend.customerV02.exception.ErrorCode;
 import iuh.fit.se.techgalaxy.frontend.customerV02.service.OrderService;
+import iuh.fit.se.techgalaxy.frontend.customerV02.service.ProductService;
 import iuh.fit.se.techgalaxy.frontend.customerV02.utils.ApiResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.AccessLevel;
@@ -20,6 +23,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +33,7 @@ import java.util.Map;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class OrderServiceImpl implements OrderService {
     WebClient webClient;
+    ProductService productService;
 
     @Override
     public ApiResponse<List<OrderResponse>> createOrder(String address, HttpSession session, PaymentStatus paymentStatus, PaymentMethod paymentMethod) {
@@ -42,6 +47,7 @@ public class OrderServiceImpl implements OrderService {
                 .customerId(customerId)
                 .paymentMethod(paymentMethod)
                 .paymentStatus(paymentStatus)
+                .orderStatus(OrderStatus.NEW)
                 .address(address);
 
         Map<String, Integer> cart = (Map<String, Integer>) session.getAttribute("cart");
@@ -51,7 +57,14 @@ public class OrderServiceImpl implements OrderService {
 
         List<OrderRequestV2.ProductDetailOrder> orderItems = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : cart.entrySet()) {
-            orderItems.add(new OrderRequestV2.ProductDetailOrder(entry.getKey(), entry.getValue()));
+            String productVariantDetailId=entry.getKey();
+            Integer quantity= entry.getValue();
+            List<String> productIds = List.copyOf(Collections.singleton(productVariantDetailId));
+            ApiResponse<List<ProductDetailResponse>> productDetails = productService.getProductDetailsByIds(productIds);
+            List<ProductDetailResponse> productDetailResponses = productDetails.getData();
+            Double price= productDetailResponses.get(0).getPrice();
+            System.out.println(productDetailResponses);
+            orderItems.add(new OrderRequestV2.ProductDetailOrder(productVariantDetailId, quantity,price));
         }
 
         orderRequestBuilder.productDetailOrders(orderItems);

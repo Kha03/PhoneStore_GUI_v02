@@ -25,20 +25,12 @@ import java.util.List;
 @RequestMapping({"/payment"})
 @Slf4j
 public class Paymentcontroller {
-    OrderService orderService;
-    EmailService emailService;
-    CustomerService customerService;
     @GetMapping()
     public String getPayment(@RequestParam("vnp_ResponseCode") String vnp_ResponseCode,@RequestParam("vnp_TxnRef") String vnp_TxnRef ,HttpServletRequest request) {
         HttpSession session = request.getSession();
         if (vnp_ResponseCode.equals("00")) {
             String address = (String) session.getAttribute("address");
             if (address != null) {
-//                orderService.createOrder(address, session, PaymentStatus.PAID);
-//                String email = (String) session.getAttribute("email");
-//                ApiResponse<List<CustomerResponse>> customerResponse = customerService.getInfoByMail(email, session);
-//                String customerName = customerResponse.getData().get(0).getName();
-//                emailService.sendEmailFromTemplateSync("VN-Pay", address,customerName , vnp_TxnRef, session);
                 session.removeAttribute("address");
                 return "vnpay_return";
             }

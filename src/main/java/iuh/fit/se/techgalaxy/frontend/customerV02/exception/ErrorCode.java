@@ -19,7 +19,7 @@ public enum ErrorCode {
     ORDER_CREATION_FAILED(5001, "Order creation failed", HttpStatus.BAD_REQUEST),
     ERROR_GETTING_IMG(5002, "Error getting image", HttpStatus.BAD_REQUEST),
     INSUFFICIENT_PRODUCT_QUANTITY(5003, "Insufficient product quantity", HttpStatus.BAD_REQUEST),
-
+    PRODUCT_DATA_MISSING(5004, "PRODUCT_DATA_MISSING", HttpStatus.BAD_REQUEST),
     ADRESS_NOT_EMPTY(2000, "Address is not empty", HttpStatus.BAD_REQUEST),
     QUANTITY_MIN_1(2001, "Quantity must be greater than 0", HttpStatus.BAD_REQUEST),
     UNAUTHORIZED_ACCESS(4001, "Invalid or expired access token", HttpStatus.UNAUTHORIZED),
