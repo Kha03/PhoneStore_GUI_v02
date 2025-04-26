@@ -61,8 +61,8 @@ public class CheckoutController {
                 return "redirect:" + order.getData().get(0).getPaymentLink();
             }
             if(order != null) {
-                emailService.sendEmailFromTemplateSync(paymentMethod.toString(), address, name,order.getData().get(0).getId(), session);
-                redirectAttributes.addFlashAttribute("orderMessage", "Order placed successfully, PLease check your mail!");
+//                emailService.sendEmailFromTemplateSync(paymentMethod.toString(), address, name,order.getData().get(0).getId(), session);
+                redirectAttributes.addFlashAttribute("orderMessage", "Order placed successfully!");
                 return "redirect:/cart";
             }
         return "redirect:/cart/checkout";
