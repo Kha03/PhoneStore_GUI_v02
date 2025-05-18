@@ -551,6 +551,9 @@
         </div>
     </div>
 </main>
+
+<jsp:include page="chatbot.jsp" />
+
 <!-- Footer -->
 <footer id="footer" class="footer"></footer>
 <script>

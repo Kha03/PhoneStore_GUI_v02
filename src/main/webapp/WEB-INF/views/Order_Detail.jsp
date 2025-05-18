@@ -122,7 +122,9 @@
 			</div>
 		</div>
 	</div>
-	<!-- Footer -->
+
+	<jsp:include page="chatbot.jsp" />
+
 	<!-- Footer -->
 	<footer id="footer" class="footer"></footer>
 	<script>

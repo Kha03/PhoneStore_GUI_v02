@@ -71,6 +71,9 @@
 
     <p>Phone Store không chỉ là một sản phẩm của riêng chúng em, mà còn là kết quả của tình cảm, sự nỗ lực và sự hướng dẫn với tận tâm của cô. Cảm ơn cô rất nhiều vì đã giúp em thực hiện ước mơ của mình!</p>
 </main>
+
+<jsp:include page="chatbot.jsp" />
+
 <!-- Footer -->
 <footer id="footer" class="footer">&copy; 2024 Phone Store Blog. All rights reserved.</footer>
 <script>
